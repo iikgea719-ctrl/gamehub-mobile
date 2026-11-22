@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAME ANDROID | GH PLAY STATION</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+header {
+  padding: 20px 6%;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.logo span {
+  color: #168DFF;
+}
+
+.back {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.back:hover {
+  color: #168DFF;
+}
+
+.hero {
+  padding: 55px 6% 35px;
+  text-align: center;
+  background: radial-gradient(
+    ellipse at top,
+    #071b35 0%,
+    #000 70%
+  );
+  border-bottom: 1px solid #333;
+}
+
+.tag {
+  color: #168DFF;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+
+h1 {
+  font-size: clamp(30px, 6vw, 48px);
+  margin: 18px 0 12px;
+}
+
+h1 span {
+  color: #168DFF;
+}
+
+.hero p {
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+main {
+  padding: 35px 6% 60px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.search-box {
+  margin-bottom: 25px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 15px;
+  background: #101010;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: white;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-box input:focus {
+  border-color: #168DFF;
+}
+
+.filters {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.filter-btn {
+  padding: 10px 17px;
+  background: #111;
+  color: #aaa;
+  border: 1px solid #444;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: #168DFF;
+  color: #fff;
+  border-color: #168DFF;
+}
+
+.catalog-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.catalog-heading h2 {
+  font-size: 20px;
+}
+
+.catalog-heading span {
+  color: #777;
+  font-size: 12px;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 18px;
+}
+
+.game-card {
+  background: #101010;
+  border: 1px solid #333;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.game-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+}
+
+.game-info {
+  padding: 16px;
+}
+
+.game-info h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.game-info p {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.game-category {
+  display: inline-block;
+  color: #168DFF;
+  font-size: 11px;
+  margin-bottom: 10px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 55px 15px;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+.empty-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.empty-state h3 {
+  font-size: 19px;
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  color: #999;
+  font-size: 13px;
+  line-height: 1.7;
+  max-width: 420px;
+  margin: auto;
+}
+
+footer {
+  border-top: 1px solid #333;
+  padding: 22px 6%;
+  text-align: center;
+  color: #777;
+  font-size: 12px;
+}
+
+@media(max-width: 500px) {
+  header {
+    padding: 16px 5%;
+  }
+
+  .logo {
+    font-size: 15px;
+  }
+
+  .hero {
+    padding: 42px 5% 30px;
+  }
+
+  main {
+    padding: 25px 5% 45px;
+  }
+
+  .filters {
+    gap: 7px;
+  }
+
+  .filter-btn {
+    padding: 9px 12px;
+    font-size: 11px;
+  }
+
+  .game-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">GH <span>PLAY STATION</span></div>
+  <a class="back" href="index.html">← BERANDA</a>
+</header>
+
+<section class="hero">
+  <div class="tag">GH PLAY STATION / ANDROID</div>
+  <h1>GAME <span>ANDROID</span></h1>
+  <p>
+    Temukan game Android favoritmu dan jelajahi
+    berbagai pilihan game.
+  </p>
+</section>
+
+<main>
+
+  <div class="search-box">
+    <input
+      type="search"
+      id="searchInput"
+      placeholder="Cari nama game..."
+      aria-label="Cari game Android"
+    >
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-category="Semua">SEMUA</button>
+    <button class="filter-btn" data-category="Action">ACTION</button>
+    <button class="filter-btn" data-category="Adventure">ADVENTURE</button>
+    <button class="filter-btn" data-category="Strategy">STRATEGY</button>
+    <button class="filter-btn" data-category="Casual">CASUAL</button>
+  </div>
+
+  <div class="catalog-heading">
+    <h2>EXPLORE GAMES</h2>
+    <span id="gameCount">0 GAME</span>
+  </div>
+
+  <div class="game-grid" id="gameGrid"></div>
+
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">🎮</div>
+    <h3>GAME SEGERA HADIR</h3>
+    <p>
+      Katalog game Android sedang dipersiapkan.
+      Game dan informasi pembelian akan ditambahkan
+      setelah data serta tautan mitra resmi diverifikasi.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  © 2026 GH PLAY STATION. All Rights Reserved.
+</footer>
+
+<script>
+const games = [];
+
+let selectedCategory = "Semua";
+
+const searchInput = document.getElementById("searchInput");
+const gameGrid = document.getElementById("gameGrid");
+const emptyState = document.getElementById("emptyState");
+const gameCount = document.getElementById("gameCount");
+
+function renderGames() {
+  const keyword = searchInput.value.toLowerCase();
+
+  const filteredGames = games.filter(game => {
+    const matchName = game.name.toLowerCase().includes(keyword);
+    const matchCategory =
+      selectedCategory === "Semua" ||
+      game.category === selectedCategory;
+
+    return matchName && matchCategory;
+  });
+
+  gameGrid.innerHTML = "";
+
+  filteredGames.forEach(game => {
+    const card = document.createElement("article");
+    card.className = "game-card";
+
+    const img = document.createElement("img");
+    img.src = game.image;
+    img.alt = game.name;
+
+    const info = document.createElement("div");
+    info.className = "game-info";
+
+    const category = document.createElement("span");
+    category.className = "game-category";
+    category.textContent = game.category.toUpperCase();
+
+    const title = document.createElement("h3");
+    title.textContent = game.name;
+
+    const description = document.createElement("p");
+    description.textContent = game.description;
+
+    info.append(category, title, description);
+    card.append(img, info);
+    gameGrid.appendChild(card);
+  });
+
+  gameCount.textContent = filteredGames.length + " GAME";
+
+  emptyState.style.display =
+    filteredGames.length === 0 ? "block" : "none";
+}
+
+searchInput.addEventListener("input", renderGames);
+
+document.querySelectorAll(".filter-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    selectedCategory = button.dataset.category;
+
+    renderGames();
+  });
+});
+
+renderGames();
+</script>
+
+</body>
+</html>
