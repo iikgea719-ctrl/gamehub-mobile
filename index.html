@@ -324,6 +324,36 @@ footer {
   }
 }
   
+/* ANDROID GAMES - IMAGE CARD */
+.cards .card:first-child {
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 5, 18, 0.12),
+      rgba(0, 5, 18, 0.55) 55%,
+      rgba(0, 5, 18, 0.94)
+    ),
+    url("android-games.png") center center / cover no-repeat;
+
+  border: 1px solid #168DFF;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 12px rgba(0, 140, 255, 0.18);
+}
+
+/* Hilangkan emoji lama */
+.cards .card:first-child .emoji {
+  display: none;
+}
+
+/* Perjelas tulisan di atas gambar */
+.cards .card:first-child h3,
+.cards .card:first-child p,
+.cards .card:first-child a {
+  text-shadow: 0 2px 5px #000000;
+}
+
 </style>
 </head>
 <body>
