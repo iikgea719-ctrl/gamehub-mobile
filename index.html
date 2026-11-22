@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GH PLAY STATION | Gaming Marketplace</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#080b16;color:#fff;
+  font-family:Arial,sans-serif;
+}
+header{
+  padding:22px 7%;display:flex;
+  justify-content:space-between;align-items:center;
+  border-bottom:1px solid #242b43;
+}
+.logo{font-size:22px;font-weight:900}
+.logo span{color:#9875ff}
+nav a{color:#bbb;text-decoration:none;margin-left:18px;font-size:13px}
+.hero{
+  padding:85px 7% 75px;text-align:center;
+  background:radial-gradient(ellipse at top,#29205b 0%,#080b16 65%);
+}
+.tag{color:#a58cff;font-size:12px;letter-spacing:3px}
+h1{font-size:clamp(35px,7vw,65px);margin:20px 0}
+h1 span{color:#9b7aff}
+.hero p{color:#b8bdd0;line-height:1.7;max-width:550px;margin:auto}
+.btn{
+ display:inline-block;margin-top:28px;padding:14px 25px;
+ background:#7955ed;color:white;text-decoration:none;
+ border-radius:8px;font-weight:bold
+}
+section{padding:55px 7%}
+.section-title{text-align:center;margin-bottom:30px}
+.section-title p{color:#999;margin-top:10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.card{
+ background:#111729;border:1px solid #29314c;
+ border-radius:14px;padding:25px;
+}
+.card .emoji{font-size:38px}
+.card h3{margin:17px 0 10px}
+.card p{color:#aeb5c9;font-size:14px;line-height:1.6}
+.card a{display:inline-block;margin-top:18px;color:#a990ff;text-decoration:none}
+.notice{
+ margin:0 7% 45px;padding:18px;
+ border:1px solid #373052;border-radius:10px;
+ color:#bfc2d2;font-size:13px;line-height:1.7
+}
+footer{
+ border-top:1px solid #242b43;padding:25px 7%;
+ text-align:center;color:#777;font-size:12px
+}
+@media(max-width:500px){nav a{margin-left:8px;font-size:11px}.logo{font-size:17px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">GH <span>PLAY STATION</span></div>
+ <nav>
+  <a href="#kategori">Kategori</a>
+  <a href="#tentang">Tentang</a>
+ </nav>
+</header>
+
+<div class="hero">
+ <div class="tag">YOUR ULTIMATE GAMING MARKETPLACE</div>
+ <h1>LEVEL UP YOUR <span>GAME.</span></h1>
+ <p>Temukan game favoritmu, jelajahi dunia gaming, dan temukan tempat pembelian melalui mitra resmi kami.</p>
+ <a class="btn" href="#kategori">JELAJAHI GAME</a>
+</div>
+
+<section id="kategori">
+ <div class="section-title">
+  <h2>EXPLORE GAMES</h2>
+  <p>Pilih kategori game favoritmu.</p>
+ </div>
+ <div class="cards">
+  <div class="card">
+   <div class="emoji">📱</div>
+   <h3>ANDROID GAMES</h3>
+   <p>Temukan berbagai game Android yang tersedia melalui toko resmi.</p>
+   <a href="#tentang">Jelajahi kategori →</a>
+  </div>
+  <div class="card">
+   <div class="emoji">🎮</div>
+   <h3>PLAYSTATION GAMES</h3>
+   <p>Jelajahi game PlayStation dan informasi cara memainkannya melalui layanan yang didukung.</p>
+   <a href="#tentang">Jelajahi kategori →</a>
+  </div>
+ </div>
+</section>
+
+<div class="notice" id="tentang">
+ <strong>INFORMASI PEMBELIAN</strong><br>
+ GH PLAY STATION merupakan katalog dan platform affiliate.
+ Pembelian dilakukan melalui mitra atau toko resmi. Sebagian tautan
+ dapat menghasilkan komisi bagi kami tanpa biaya tambahan bagi pembeli.
+</div>
+
+<footer>
+ © 2026 GH PLAY STATION. All Rights Reserved.
+</footer>
+</body>
+</html>
