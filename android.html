@@ -436,9 +436,18 @@ main {
   © 2026 GH PLAY STATION. All Rights Reserved.
 </footer>
 
-<script>
-const games = [];
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://xxkaiiyspdmsrhjqqige.supabase.co";
+const SUPABASE_KEY = "sb_publishable_45T1esuLNy7wvREWW_1QTw_gmTntbpK";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let games = [];
 let selectedCategory = "Semua";
 
 const searchInput = document.getElementById("searchInput");
@@ -458,15 +467,19 @@ function renderGames() {
     return matchName && matchCategory;
   });
 
-  gameGrid.innerHTML = "";
+  gameGrid.replaceChildren();
 
   filteredGames.forEach(game => {
     const card = document.createElement("article");
     card.className = "game-card";
 
-    const img = document.createElement("img");
-    img.src = game.image;
-    img.alt = game.name;
+    if (game.image_url) {
+      const img = document.createElement("img");
+      img.src = game.image_url;
+      img.alt = game.name;
+      img.loading = "lazy";
+      card.appendChild(img);
+    }
 
     const info = document.createElement("div");
     info.className = "game-info";
@@ -479,17 +492,89 @@ function renderGames() {
     title.textContent = game.name;
 
     const description = document.createElement("p");
-    description.textContent = game.description;
+    description.textContent = game.description || "";
 
     info.append(category, title, description);
-    card.append(img, info);
+
+    if (game.play_method) {
+      const method = document.createElement("p");
+      method.style.marginTop = "8px";
+      method.textContent = "Metode: " + game.play_method;
+      info.appendChild(method);
+    }
+
+    if (game.price !== null) {
+      const price = document.createElement("p");
+      price.style.marginTop = "10px";
+      price.style.color = "#fff";
+      price.style.fontWeight = "bold";
+      price.textContent =
+        Number(game.price).toLocaleString("id-ID") +
+        " " + game.currency;
+      info.appendChild(price);
+    }
+
+    if (game.affiliate_url) {
+      try {
+        const url = new URL(game.affiliate_url);
+
+        if (url.protocol === "https:" || url.protocol === "http:") {
+          const link = document.createElement("a");
+          link.href = url.href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = game.purchase_label || "LIHAT GAME";
+
+          link.style.display = "inline-block";
+          link.style.marginTop = "14px";
+          link.style.padding = "10px 15px";
+          link.style.background = "#168DFF";
+          link.style.color = "#fff";
+          link.style.borderRadius = "6px";
+          link.style.textDecoration = "none";
+          link.style.fontSize = "12px";
+          link.style.fontWeight = "bold";
+
+          info.appendChild(link);
+        }
+      } catch(error) {
+        console.warn("Link game tidak valid.");
+      }
+    }
+
+    card.appendChild(info);
     gameGrid.appendChild(card);
   });
 
   gameCount.textContent = filteredGames.length + " GAME";
-
   emptyState.style.display =
     filteredGames.length === 0 ? "block" : "none";
+}
+
+async function loadGames() {
+  try {
+    const { data, error } = await db
+      .from("games")
+      .select("*")
+      .eq("platform", "android")
+      .eq("status", "published")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    games = data || [];
+    renderGames();
+
+  } catch(error) {
+    console.error("Gagal mengambil katalog:", error);
+    gameGrid.replaceChildren();
+    gameCount.textContent = "ERROR";
+    emptyState.style.display = "block";
+    emptyState.querySelector("h3").textContent =
+      "KATALOG BELUM DAPAT DIMUAT";
+    emptyState.querySelector("p").textContent =
+      "Terjadi kesalahan saat menghubungkan katalog. Silakan coba beberapa saat lagi.";
+  }
 }
 
 searchInput.addEventListener("input", renderGames);
@@ -507,7 +592,7 @@ document.querySelectorAll(".filter-btn").forEach(button => {
   });
 });
 
-renderGames();
+loadGames();
 </script>
 
 </body>
