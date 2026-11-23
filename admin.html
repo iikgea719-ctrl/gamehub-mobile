@@ -1,0 +1,482 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | GH PLAY STATION</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#000;color:#fff;
+  font-family:Arial,sans-serif;
+  padding:20px;
+}
+.container{max-width:1100px;margin:auto}
+header{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:15px;
+  padding:15px 0 22px;
+  border-bottom:1px solid #333;
+  margin-bottom:25px;
+}
+.logo{font-size:20px;font-weight:900}
+button{
+  padding:11px 15px;border:0;border-radius:6px;
+  background:#168cff;color:#fff;
+  font-weight:bold;cursor:pointer;
+}
+button:disabled{opacity:.5}
+.logout{background:#292929}
+h2{font-size:21px;margin-bottom:8px}
+.muted{color:#999;font-size:13px;line-height:1.5}
+.section{margin:25px 0}
+.form-box{
+  border:1px solid #333;border-radius:10px;
+  padding:20px;background:#080808;
+}
+label{
+  display:block;color:#bbb;font-size:13px;
+  margin:15px 0 7px;
+}
+input,select,textarea{
+  width:100%;padding:12px;
+  background:#111;border:1px solid #444;
+  border-radius:6px;color:#fff;
+  font:inherit;outline:none;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:#168cff;
+}
+textarea{min-height:90px;resize:vertical}
+.grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0 15px;
+}
+.actions{
+  display:flex;gap:10px;flex-wrap:wrap;
+  margin-top:20px;
+}
+.secondary{background:#292929}
+.danger{background:#b83232}
+.game-list{margin-top:15px}
+.game{
+  display:flex;gap:14px;align-items:center;
+  border-bottom:1px solid #333;padding:15px 0;
+}
+.game img{
+  width:70px;height:85px;object-fit:cover;
+  border-radius:6px;background:#181818;
+}
+.game-info{flex:1;min-width:0}
+.game-info strong{display:block;margin-bottom:7px}
+.game-info p{font-size:12px;color:#999;margin-top:4px;word-break:break-word}
+.game-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.game-actions button{padding:8px 11px;font-size:12px}
+.status{color:#65bdff}
+#message{
+  margin-top:15px;font-size:13px;
+  line-height:1.5;color:#75c5ff;
+}
+.empty{padding:25px 0;color:#888;font-size:14px}
+.hidden{display:none}
+@media(max-width:600px){
+  body{padding:14px}
+  header{align-items:flex-start}
+  .logo{font-size:17px}
+  .grid{grid-template-columns:1fr}
+  .form-box{padding:15px}
+  .game{align-items:flex-start}
+  .game img{width:60px;height:75px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">GH PLAY STATION <span style="color:#168cff">/ ADMIN</span></div>
+  <button class="logout" id="logoutBtn">LOGOUT</button>
+</header>
+
+<div class="section">
+  <h2>Dashboard Admin</h2>
+  <p class="muted">Kelola katalog game Android dan PlayStation.</p>
+</div>
+
+<div class="section form-box">
+  <h2 id="formTitle">Tambah Game Baru</h2>
+  <p class="muted">Isi informasi game yang ingin dimasukkan ke katalog.</p>
+
+  <form id="gameForm">
+    <div class="grid">
+      <div>
+        <label>Nama Game *</label>
+        <input id="name" required placeholder="Contoh: GTA V">
+      </div>
+      <div>
+        <label>Platform *</label>
+        <select id="platform" required>
+          <option value="android">Android</option>
+          <option value="ps_android">PlayStation / PS to Android</option>
+        </select>
+      </div>
+      <div>
+        <label>Kategori *</label>
+        <select id="category" required>
+          <option>Action</option>
+          <option>Adventure</option>
+          <option>RPG</option>
+          <option>Racing</option>
+          <option>Strategy</option>
+          <option>Casual</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label>Status Publikasi</label>
+        <select id="status">
+          <option value="draft">Draft</option>
+          <option value="published">Published</option>
+        </select>
+      </div>
+      <div>
+        <label>Harga</label>
+        <input id="price" type="number" min="0" step="0.01" placeholder="Contoh: 50000">
+      </div>
+      <div>
+        <label>Mata Uang</label>
+        <select id="currency">
+          <option value="IDR">IDR (Rupiah)</option>
+          <option value="USD">USD</option>
+        </select>
+      </div>
+    </div>
+
+    <label>Deskripsi Game</label>
+    <textarea id="description" placeholder="Tulis deskripsi game..."></textarea>
+
+    <label>Metode Bermain</label>
+    <input id="playMethod" placeholder="Contoh: Android native / PS Remote Play">
+
+    <label>Link Affiliate / Pembelian</label>
+    <input id="affiliate" type="url" placeholder="https://...">
+
+    <label>Teks Tombol Pembelian</label>
+    <input id="purchaseLabel" placeholder="Contoh: BELI GAME">
+
+    <label>Gambar Cover Game</label>
+    <input id="image" type="file" accept="image/jpeg,image/png,image/webp">
+    <p class="muted" style="margin-top:7px">Format JPG, PNG, WebP. Maksimal 5 MB.</p>
+
+    <div class="actions">
+      <button type="submit" id="saveBtn">SIMPAN GAME</button>
+      <button type="button" class="secondary hidden" id="cancelBtn">BATAL EDIT</button>
+    </div>
+  </form>
+
+  <div id="message" role="status"></div>
+</div>
+
+<div class="section">
+  <h2>Katalog Game</h2>
+  <p class="muted">Daftar game yang tersimpan di database.</p>
+  <div class="game-list" id="gameList">
+    <div class="empty">Memuat katalog...</div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const SUPABASE_URL = "https://xxkaiiyspdmsrhjqqige.supabase.co";
+const SUPABASE_KEY = "sb_publishable_45T1esuLNy7wvREWW_1QTw_gmTntbpK";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const $ = id => document.getElementById(id);
+
+let editingId = null;
+let currentGames = [];
+
+function showMessage(text, error=false){
+  $("message").textContent = text;
+  $("message").style.color = error ? "#ff7777" : "#75c5ff";
+}
+
+function escapeText(value){
+  return String(value ?? "");
+}
+
+function imagePath(url){
+  const marker = "/storage/v1/object/public/game-covers/";
+  if(!url || !url.includes(marker)) return null;
+  try{
+    return decodeURIComponent(url.split(marker)[1]);
+  }catch{
+    return null;
+  }
+}
+
+async function checkAdmin(){
+  const {data:{session},error} = await db.auth.getSession();
+
+  if(error || !session){
+    window.location.replace("admin-login.html");
+    return false;
+  }
+
+  const {data:admin,error:adminError} = await db
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id",session.user.id)
+    .maybeSingle();
+
+  if(adminError || !admin){
+    await db.auth.signOut();
+    window.location.replace("admin-login.html");
+    return false;
+  }
+
+  return true;
+}
+
+async function loadGames(){
+  $("gameList").textContent = "Memuat katalog...";
+
+  const {data,error} = await db
+    .from("games")
+    .select("*")
+    .order("created_at",{ascending:false});
+
+  if(error){
+    $("gameList").textContent = "Gagal memuat: " + error.message;
+    return;
+  }
+
+  currentGames = data || [];
+  renderGames();
+}
+
+function renderGames(){
+  const list = $("gameList");
+  list.replaceChildren();
+
+  if(currentGames.length === 0){
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Belum ada game. Silakan tambahkan game pertama.";
+    list.appendChild(empty);
+    return;
+  }
+
+  currentGames.forEach(game=>{
+    const item = document.createElement("div");
+    item.className = "game";
+
+    const img = document.createElement("img");
+    img.src = game.image_url || "";
+    img.alt = game.name;
+    img.onerror = ()=>{img.style.visibility="hidden"};
+
+    const info = document.createElement("div");
+    info.className = "game-info";
+
+    const name = document.createElement("strong");
+    name.textContent = game.name;
+
+    const details = document.createElement("p");
+    details.textContent =
+      (game.platform === "android" ? "Android" : "PlayStation / PS to Android")
+      + " • " + game.category;
+
+    const status = document.createElement("p");
+    status.className = "status";
+    status.textContent = game.status === "published" ? "Published" : "Draft";
+
+    const price = document.createElement("p");
+    price.textContent = game.price == null
+      ? "Harga belum diatur"
+      : Number(game.price).toLocaleString("id-ID") + " " + game.currency;
+
+    const actions = document.createElement("div");
+    actions.className = "game-actions";
+
+    const edit = document.createElement("button");
+    edit.textContent = "EDIT";
+    edit.className = "secondary";
+    edit.addEventListener("click",()=>editGame(game.id));
+
+    const remove = document.createElement("button");
+    remove.textContent = "HAPUS";
+    remove.className = "danger";
+    remove.addEventListener("click",()=>deleteGame(game.id));
+
+    actions.append(edit,remove);
+    info.append(name,details,status,price,actions);
+    item.append(img,info);
+    list.appendChild(item);
+  });
+}
+
+async function uploadImage(file){
+  if(!file) return null;
+
+  const allowed = ["image/jpeg","image/png","image/webp"];
+
+  if(!allowed.includes(file.type)){
+    throw new Error("Format gambar harus JPG, PNG, atau WebP.");
+  }
+
+  if(file.size > 5 * 1024 * 1024){
+    throw new Error("Ukuran gambar maksimal 5 MB.");
+  }
+
+  const extension = file.type === "image/jpeg" ? "jpg" :
+    file.type === "image/png" ? "png" : "webp";
+
+  const path = Date.now() + "-" +
+    crypto.randomUUID() + "." + extension;
+
+  const {error} = await db.storage
+    .from("game-covers")
+    .upload(path,file,{contentType:file.type,upsert:false});
+
+  if(error) throw error;
+
+  const {data} = db.storage
+    .from("game-covers")
+    .getPublicUrl(path);
+
+  return data.publicUrl;
+}
+
+function resetForm(){
+  $("gameForm").reset();
+  editingId = null;
+  $("formTitle").textContent = "Tambah Game Baru";
+  $("saveBtn").textContent = "SIMPAN GAME";
+  $("cancelBtn").classList.add("hidden");
+  showMessage("");
+}
+
+function editGame(id){
+  const game = currentGames.find(item=>item.id===id);
+  if(!game) return;
+
+  editingId = id;
+  $("name").value = game.name || "";
+  $("platform").value = game.platform;
+  $("category").value = game.category || "Other";
+  $("status").value = game.status;
+  $("price").value = game.price ?? "";
+  $("currency").value = game.currency || "IDR";
+  $("description").value = game.description || "";
+  $("playMethod").value = game.play_method || "";
+  $("affiliate").value = game.affiliate_url || "";
+  $("purchaseLabel").value = game.purchase_label || "";
+
+  $("formTitle").textContent = "Edit Game";
+  $("saveBtn").textContent = "SIMPAN PERUBAHAN";
+  $("cancelBtn").classList.remove("hidden");
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+async function deleteGame(id){
+  const game = currentGames.find(item=>item.id===id);
+  if(!game) return;
+
+  if(!confirm("Yakin ingin menghapus game " + game.name + "?")) return;
+
+  showMessage("Menghapus game...");
+
+  const {error} = await db.from("games").delete().eq("id",id);
+
+  if(error){
+    showMessage(error.message,true);
+    return;
+  }
+
+  const path = imagePath(game.image_url);
+
+  if(path){
+    await db.storage.from("game-covers").remove([path]);
+  }
+
+  showMessage("Game berhasil dihapus.");
+  await loadGames();
+}
+
+$("gameForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+
+  const button = $("saveBtn");
+  button.disabled = true;
+  showMessage("Menyimpan data game...");
+
+  try{
+    const file = $("image").files[0];
+    let imageUrl = null;
+
+    if(file){
+      imageUrl = await uploadImage(file);
+    }
+
+    const payload = {
+      name:$("name").value.trim(),
+      platform:$("platform").value,
+      category:$("category").value,
+      status:$("status").value,
+      price:$("price").value === "" ? null : Number($("price").value),
+      currency:$("currency").value,
+      description:$("description").value.trim(),
+      play_method:$("playMethod").value.trim(),
+      affiliate_url:$("affiliate").value.trim() || null,
+      purchase_label:$("purchaseLabel").value.trim() || null,
+      updated_at:new Date().toISOString()
+    };
+
+    if(imageUrl) payload.image_url = imageUrl;
+
+    let result;
+
+    if(editingId){
+      result = await db.from("games")
+        .update(payload).eq("id",editingId);
+    }else{
+      result = await db.from("games")
+        .insert(payload);
+    }
+
+    if(result.error) throw result.error;
+
+    resetForm();
+    showMessage(editingId ? "Perubahan berhasil disimpan." : "Game berhasil ditambahkan.");
+    await loadGames();
+
+  }catch(error){
+    showMessage(error.message || "Terjadi kesalahan.",true);
+  }finally{
+    button.disabled = false;
+  }
+});
+
+$("cancelBtn").addEventListener("click",resetForm);
+
+$("logoutBtn").addEventListener("click",async()=>{
+  await db.auth.signOut();
+  window.location.replace("admin-login.html");
+});
+
+(async()=>{
+  const allowed = await checkAdmin();
+  if(allowed) await loadGames();
+})();
+</script>
+</body>
+</html>
