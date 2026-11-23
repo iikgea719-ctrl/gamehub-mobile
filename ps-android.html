@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAME PS TO ANDROID | GH PLAY STATION</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+header {
+  padding: 13px 6%;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.logo span {
+  color: #A56BFF;
+}
+
+.back {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.back:hover {
+  color: #A56BFF;
+}
+
+.hero {
+  padding: 32px 6% 25px;
+  text-align: center;
+  background: radial-gradient(
+    ellipse at top,
+    #24103D 0%,
+    #000 70%
+  );
+  border-bottom: 1px solid #333;
+}
+
+.tag {
+  color: #B98AFF;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+
+h1 {
+  font-size: clamp(29px, 6vw, 46px);
+  margin: 12px 0 8px;
+}
+
+h1 span {
+  color: #B98AFF;
+}
+
+.hero p {
+  color: #bbb;
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 520px;
+  margin: auto;
+}
+
+main {
+  padding: 22px 6% 35px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.search-box {
+  margin-bottom: 16px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px;
+  background: #101010;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: white;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-box input:focus {
+  border-color: #A56BFF;
+}
+
+.filters {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.filter-btn {
+  padding: 8px 13px;
+  background: #111;
+  color: #aaa;
+  border: 1px solid #444;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: #8B4DE8;
+  color: #fff;
+  border-color: #A56BFF;
+}
+
+.catalog-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.catalog-heading h2 {
+  font-size: 19px;
+}
+
+.catalog-heading span {
+  color: #777;
+  font-size: 12px;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 18px;
+}
+
+.game-card {
+  background: #101010;
+  border: 1px solid #44315B;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.game-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+}
+
+.game-info {
+  padding: 16px;
+}
+
+.game-info h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.game-info p {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.game-category {
+  display: inline-block;
+  color: #B98AFF;
+  font-size: 11px;
+  margin-bottom: 10px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 35px 12px;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+.empty-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.empty-state h3 {
+  font-size: 17px;
+  margin-bottom: 7px;
+}
+
+.empty-state p {
+  color: #999;
+  font-size: 12px;
+  line-height: 1.7;
+  max-width: 450px;
+  margin: auto;
+}
+
+.methods {
+  margin-top: 35px;
+}
+
+.methods h2 {
+  font-size: 19px;
+  margin-bottom: 15px;
+}
+
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 12px;
+}
+
+.method-card {
+  background: #101010;
+  border: 1px solid #44315B;
+  border-radius: 10px;
+  padding: 17px;
+}
+
+.method-card h3 {
+  font-size: 15px;
+  color: #C49AFF;
+  margin-bottom: 9px;
+}
+
+.method-card p {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.info-note {
+  margin-top: 17px;
+  padding: 13px 0;
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #444;
+  color: #aaa;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+footer {
+  border-top: 1px solid #333;
+  padding: 15px 5%;
+  text-align: center;
+  color: #777;
+  font-size: 12px;
+}
+
+@media(max-width: 500px) {
+  header {
+    padding: 12px 5%;
+  }
+
+  .logo {
+    font-size: 15px;
+  }
+
+  .hero {
+    padding: 27px 5% 20px;
+  }
+
+  .hero h1 {
+    font-size: 27px;
+  }
+
+  .hero p {
+    font-size: 12px;
+  }
+
+  main {
+    padding: 18px 5% 28px;
+  }
+
+  .filters {
+    gap: 6px;
+    margin-bottom: 17px;
+  }
+
+  .filter-btn {
+    padding: 7px 10px;
+    font-size: 10px;
+  }
+
+  .catalog-heading h2 {
+    font-size: 17px;
+  }
+
+  .game-grid,
+  .method-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .methods {
+    margin-top: 27px;
+  }
+
+  .methods h2 {
+    font-size: 17px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">GH <span>PLAY STATION</span></div>
+  <a class="back" href="index.html">← BERANDA</a>
+</header>
+
+<section class="hero">
+  <div class="tag">GH PLAY STATION / PLAYSTATION</div>
+  <h1>GAME PS <span>TO ANDROID</span></h1>
+  <p>
+    Jelajahi game PlayStation dan pelajari cara
+    memainkannya melalui perangkat Android.
+  </p>
+</section>
+
+<main>
+
+  <div class="search-box">
+    <input
+      type="search"
+      id="searchInput"
+      placeholder="Cari nama game PlayStation..."
+      aria-label="Cari game PlayStation"
+    >
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-category="Semua">SEMUA</button>
+    <button class="filter-btn" data-category="Action">ACTION</button>
+    <button class="filter-btn" data-category="Adventure">ADVENTURE</button>
+    <button class="filter-btn" data-category="RPG">RPG</button>
+    <button class="filter-btn" data-category="Racing">RACING</button>
+  </div>
+
+  <div class="catalog-heading">
+    <h2>EXPLORE PLAYSTATION</h2>
+    <span id="gameCount">0 GAME</span>
+  </div>
+
+  <div class="game-grid" id="gameGrid"></div>
+
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">🎮</div>
+    <h3>KATALOG SEGERA HADIR</h3>
+    <p>
+      Daftar game PlayStation sedang dipersiapkan.
+      Informasi game, metode bermain di Android,
+      dan tautan layanan resmi akan ditambahkan
+      setelah diverifikasi.
+    </p>
+  </div>
+
+  <section class="methods">
+    <h2>CARA BERMAIN GAME PS DI ANDROID</h2>
+
+    <div class="method-grid">
+
+      <div class="method-card">
+        <h3>PLAYSTATION REMOTE PLAY</h3>
+        <p>
+          Hubungkan perangkat Android ke konsol PS4
+          atau PS5 menggunakan aplikasi resmi
+          PS Remote Play. Konsol dan koneksi internet
+          yang sesuai diperlukan.
+        </p>
+      </div>
+
+      <div class="method-card">
+        <h3>GAME STREAMING RESMI</h3>
+        <p>
+          Beberapa layanan menyediakan permainan
+          melalui streaming. Ketersediaan game,
+          perangkat, wilayah, dan langganan bergantung
+          pada ketentuan masing-masing layanan.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="info-note">
+      <strong>INFORMASI PENTING</strong><br>
+      Tidak semua game PlayStation tersedia untuk
+      dimainkan di Android. Remote Play menampilkan
+      permainan dari konsol yang kamu miliki,
+      bukan mengubah game konsol menjadi aplikasi Android.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 GH PLAY STATION. All Rights Reserved.
+</footer>
+
+<script>
+const games = [];
+
+let selectedCategory = "Semua";
+
+const searchInput = document.getElementById("searchInput");
+const gameGrid = document.getElementById("gameGrid");
+const emptyState = document.getElementById("emptyState");
+const gameCount = document.getElementById("gameCount");
+
+function renderGames() {
+  const keyword = searchInput.value.toLowerCase();
+
+  const filteredGames = games.filter(game => {
+    const matchName = game.name.toLowerCase().includes(keyword);
+
+    const matchCategory =
+      selectedCategory === "Semua" ||
+      game.category === selectedCategory;
+
+    return matchName && matchCategory;
+  });
+
+  gameGrid.innerHTML = "";
+
+  filteredGames.forEach(game => {
+    const card = document.createElement("article");
+    card.className = "game-card";
+
+    const img = document.createElement("img");
+    img.src = game.image;
+    img.alt = game.name;
+
+    const info = document.createElement("div");
+    info.className = "game-info";
+
+    const category = document.createElement("span");
+    category.className = "game-category";
+    category.textContent = game.category.toUpperCase();
+
+    const title = document.createElement("h3");
+    title.textContent = game.name;
+
+    const description = document.createElement("p");
+    description.textContent = game.description;
+
+    info.append(category, title, description);
+    card.append(img, info);
+    gameGrid.appendChild(card);
+  });
+
+  gameCount.textContent = filteredGames.length + " GAME";
+
+  emptyState.style.display =
+    filteredGames.length === 0 ? "block" : "none";
+}
+
+searchInput.addEventListener("input", renderGames);
+
+document.querySelectorAll(".filter-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    selectedCategory = button.dataset.category;
+
+    renderGames();
+  });
+});
+
+renderGames();
+</script>
+
+</body>
+</html>
