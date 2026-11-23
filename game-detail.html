@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DETAIL GAME | GH PLAY STATION</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:#000;
+  color:#fff;
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+}
+
+header{
+  padding:14px 6%;
+  border-bottom:1px solid #333;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{font-size:19px;font-weight:900}
+.logo span{color:#168cff}
+
+.back{
+  color:#aaa;
+  text-decoration:none;
+  font-size:13px;
+}
+
+.back:hover{color:#fff}
+
+main{
+  max-width:1050px;
+  margin:auto;
+  padding:30px 6% 45px;
+}
+
+.detail{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+  align-items:start;
+}
+
+.cover{
+  width:100%;
+  aspect-ratio:16/11;
+  object-fit:cover;
+  border-radius:10px;
+  background:#111;
+  border:1px solid #333;
+}
+
+.category{
+  display:inline-block;
+  color:#168cff;
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:12px;
+}
+
+h1{
+  font-size:clamp(27px,5vw,38px);
+  margin-bottom:15px;
+  line-height:1.2;
+}
+
+.description{
+  color:#aaa;
+  font-size:14px;
+  line-height:1.8;
+  white-space:pre-line;
+}
+
+.meta{
+  margin-top:22px;
+  border-top:1px solid #333;
+}
+
+.meta-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:13px 0;
+  border-bottom:1px solid #252525;
+  font-size:13px;
+}
+
+.meta-row span:first-child{color:#888}
+.meta-row span:last-child{text-align:right}
+
+.price{
+  font-size:23px;
+  font-weight:bold;
+  margin-top:22px;
+}
+
+.price-label{
+  color:#888;
+  font-size:11px;
+  margin-top:7px;
+}
+
+.buy-button{
+  display:block;
+  width:100%;
+  padding:15px;
+  margin-top:20px;
+  background:#168cff;
+  color:white;
+  text-align:center;
+  text-decoration:none;
+  border-radius:7px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.buy-button:hover{background:#0874df}
+
+.info-section{
+  margin-top:38px;
+  padding-top:22px;
+  border-top:1px solid #333;
+}
+
+.info-section h2{
+  font-size:18px;
+  margin-bottom:12px;
+}
+
+.info-section p{
+  color:#999;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.message{
+  text-align:center;
+  padding:65px 15px;
+  color:#aaa;
+  font-size:14px;
+  line-height:1.8;
+}
+
+.message h2{
+  color:white;
+  margin-bottom:10px;
+}
+
+footer{
+  border-top:1px solid #333;
+  padding:17px 5%;
+  text-align:center;
+  color:#777;
+  font-size:12px;
+}
+
+@media(max-width:650px){
+  header{padding:13px 5%}
+  .logo{font-size:15px}
+  main{padding:23px 5% 35px}
+  .detail{grid-template-columns:1fr;gap:22px}
+  .cover{aspect-ratio:16/10}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">GH <span>PLAY STATION</span></div>
+  <a class="back" id="backLink" href="index.html">← KEMBALI</a>
+</header>
+
+<main>
+
+<div id="loading" class="message">
+  Memuat informasi game...
+</div>
+
+<div id="error" class="message" style="display:none">
+  <h2>GAME TIDAK DITEMUKAN</h2>
+  <p>Game mungkin tidak tersedia atau sudah tidak dipublikasikan.</p>
+</div>
+
+<div id="detail" style="display:none">
+
+  <section class="detail">
+
+    <div>
+      <img id="cover" class="cover" alt="Cover game">
+    </div>
+
+    <div>
+      <span id="category" class="category"></span>
+      <h1 id="gameName"></h1>
+
+      <p id="description" class="description"></p>
+
+      <div class="meta">
+        <div class="meta-row">
+          <span>Platform</span>
+          <span id="platform"></span>
+        </div>
+
+        <div class="meta-row">
+          <span>Genre</span>
+          <span id="genre"></span>
+        </div>
+
+        <div class="meta-row">
+          <span>Metode Bermain</span>
+          <span id="method"></span>
+        </div>
+      </div>
+
+      <div id="priceBox" style="display:none">
+        <div class="price" id="price"></div>
+        <div class="price-label">HARGA GAME</div>
+      </div>
+
+      <a id="buyButton" class="buy-button"
+         href="#" target="_blank"
+         rel="noopener noreferrer"
+         style="display:none">
+        LIHAT GAME
+      </a>
+    </div>
+
+  </section>
+
+  <section class="info-section">
+    <h2>INFORMASI GAME</h2>
+    <p id="extraInfo">
+      Informasi game disediakan oleh GH PLAY STATION.
+      Periksa ketersediaan dan ketentuan layanan melalui mitra resmi.
+    </p>
+  </section>
+
+</div>
+
+</main>
+
+<footer>
+  © 2026 GH PLAY STATION. All Rights Reserved.
+</footer>
+
+<script>
+const SUPABASE_URL = "https://xxkaiiyspdmsrhjqqige.supabase.co";
+const SUPABASE_KEY = "sb_publishable_45T1esuLNy7wvREWW_1QTw_gmTntbpK";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const $ = id => document.getElementById(id);
+
+function showError(){
+  $("loading").style.display = "none";
+  $("detail").style.display = "none";
+  $("error").style.display = "block";
+}
+
+async function loadGame(){
+  const params = new URLSearchParams(window.location.search);
+  const gameId = params.get("id");
+
+  if(!gameId){
+    showError();
+    return;
+  }
+
+  const {data:game,error} = await db
+    .from("games")
+    .select("*")
+    .eq("id",gameId)
+    .eq("status","published")
+    .maybeSingle();
+
+  if(error){
+    console.error("Gagal mengambil game:",error);
+    showError();
+    return;
+  }
+
+  if(!game){
+    showError();
+    return;
+  }
+
+  const isPS = game.platform === "ps_android";
+
+  $("backLink").href = isPS
+    ? "ps-android.html"
+    : "android.html";
+
+  $("backLink").textContent = isPS
+    ? "← KATALOG PLAYSTATION"
+    : "← KATALOG ANDROID";
+
+  $("logo").textContent = "GH PLAY STATION";
+
+  $("cover").src = game.image_url || "";
+  $("cover").alt = game.name || "Cover game";
+
+  $("category").textContent =
+    (game.category || "GAME").toUpperCase();
+
+  $("category").style.color =
+    isPS ? "#B98AFF" : "#168cff";
+
+  $("gameName").textContent = game.name || "Game";
+
+  $("description").textContent =
+    game.description || "Informasi game belum tersedia.";
+
+  $("platform").textContent =
+    isPS ? "PlayStation / PS to Android" : "Android";
+
+  $("genre").textContent = game.category || "Other";
+
+  $("method").textContent =
+    game.play_method || "Informasi belum tersedia";
+
+  if(game.price !== null && game.price !== undefined){
+    $("priceBox").style.display = "block";
+
+    $("price").textContent =
+      Number(game.price).toLocaleString("id-ID") +
+      " " + (game.currency || "IDR");
+  }
+
+  if(game.affiliate_url){
+    const button = $("buyButton");
+
+    button.href = game.affiliate_url;
+    button.textContent =
+      game.purchase_label || "LIHAT GAME";
+
+    button.style.display = "block";
+  }
+
+  $("loading").style.display = "none";
+  $("detail").style.display = "block";
+}
+
+loadGame();
+</script>
+
+</body>
+</html>
