@@ -483,7 +483,13 @@ function renderGames() {
 
   filteredGames.forEach(game => {
     const card = document.createElement("article");
-    card.className = "game-card";
+card.className = "game-card";
+card.style.cursor = "pointer";
+
+card.addEventListener("click", () => {
+  window.location.href =
+    "game-detail.html?id=" + encodeURIComponent(game.id);
+});
 
     if (game.image_url) {
       const img = document.createElement("img");
