@@ -469,7 +469,7 @@ function renderGames() {
 
   const filteredGames = games.filter(game => {
     const matchName =
-      (game.title || "").toLowerCase().includes(keyword);
+  (game.name || "").toLowerCase().includes(keyword);
 
     const matchCategory =
       selectedCategory === "Semua" ||
@@ -500,7 +500,7 @@ function renderGames() {
     category.textContent = (game.category || "Game").toUpperCase();
 
     const title = document.createElement("h3");
-    title.textContent = game.title || "Game tanpa judul";
+    title.textContent = game.name || "Game tanpa judul";
 
     const description = document.createElement("p");
     description.textContent = game.description || "";
