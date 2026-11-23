@@ -471,7 +471,13 @@ function renderGames() {
 
   filteredGames.forEach(game => {
     const card = document.createElement("article");
-    card.className = "game-card";
+card.className = "game-card";
+card.style.cursor = "pointer";
+
+card.addEventListener("click", () => {
+  window.location.href =
+    "game-detail.html?id=" + encodeURIComponent(game.id);
+});
 
     if (game.image_url) {
       const img = document.createElement("img");
@@ -523,6 +529,7 @@ function renderGames() {
           link.href = url.href;
           link.target = "_blank";
           link.rel = "noopener noreferrer";
+          link.addEventListener("click", event => event.stopPropagation());
           link.textContent = game.purchase_label || "LIHAT GAME";
 
           link.style.display = "inline-block";
