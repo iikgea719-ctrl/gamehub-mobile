@@ -423,8 +423,15 @@ footer {
 </footer>
 
 <script>
-const games = [];
+const SUPABASE_URL = "https://xxkaiiyspdmsrhjqqige.supabase.co";
+const SUPABASE_KEY = "sb_publishable_45T1esuLNy7wvREWW_1QTw_gmTntbpK";
 
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let games = [];
 let selectedCategory = "Semua";
 
 const searchInput = document.getElementById("searchInput");
@@ -432,11 +439,37 @@ const gameGrid = document.getElementById("gameGrid");
 const emptyState = document.getElementById("emptyState");
 const gameCount = document.getElementById("gameCount");
 
+async function loadGames() {
+  gameGrid.innerHTML = "<p style='color:#aaa'>Memuat katalog...</p>";
+
+  const { data, error } = await supabaseClient
+    .from("games")
+    .select("*")
+    .eq("platform", "ps_android")
+    .eq("status", "published")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Gagal memuat game:", error);
+    gameGrid.innerHTML = "";
+    emptyState.style.display = "block";
+    emptyState.querySelector("h3").textContent = "GAGAL MEMUAT KATALOG";
+    emptyState.querySelector("p").textContent =
+      "Terjadi masalah saat mengambil data. Silakan coba beberapa saat lagi.";
+    gameCount.textContent = "0 GAME";
+    return;
+  }
+
+  games = data || [];
+  renderGames();
+}
+
 function renderGames() {
-  const keyword = searchInput.value.toLowerCase();
+  const keyword = searchInput.value.toLowerCase().trim();
 
   const filteredGames = games.filter(game => {
-    const matchName = game.name.toLowerCase().includes(keyword);
+    const matchName =
+      (game.title || "").toLowerCase().includes(keyword);
 
     const matchCategory =
       selectedCategory === "Semua" ||
@@ -451,25 +484,38 @@ function renderGames() {
     const card = document.createElement("article");
     card.className = "game-card";
 
-    const img = document.createElement("img");
-    img.src = game.image;
-    img.alt = game.name;
+    if (game.image_url) {
+      const img = document.createElement("img");
+      img.src = game.image_url;
+      img.alt = game.title || "Game PlayStation";
+      img.loading = "lazy";
+      card.appendChild(img);
+    }
 
     const info = document.createElement("div");
     info.className = "game-info";
 
     const category = document.createElement("span");
     category.className = "game-category";
-    category.textContent = game.category.toUpperCase();
+    category.textContent = (game.category || "Game").toUpperCase();
 
     const title = document.createElement("h3");
-    title.textContent = game.name;
+    title.textContent = game.title || "Game tanpa judul";
 
     const description = document.createElement("p");
-    description.textContent = game.description;
+    description.textContent = game.description || "";
 
     info.append(category, title, description);
-    card.append(img, info);
+
+    if (game.play_method) {
+      const method = document.createElement("p");
+      method.style.marginTop = "10px";
+      method.style.color = "#C49AFF";
+      method.textContent = "Metode: " + game.play_method;
+      info.appendChild(method);
+    }
+
+    card.appendChild(info);
     gameGrid.appendChild(card);
   });
 
@@ -477,6 +523,13 @@ function renderGames() {
 
   emptyState.style.display =
     filteredGames.length === 0 ? "block" : "none";
+
+  if (filteredGames.length === 0) {
+    emptyState.querySelector("h3").textContent =
+      "KATALOG SEGERA HADIR";
+    emptyState.querySelector("p").textContent =
+      "Daftar game PlayStation sedang dipersiapkan. Informasi game dan metode bermain di Android akan ditambahkan setelah diverifikasi.";
+  }
 }
 
 searchInput.addEventListener("input", renderGames);
@@ -494,7 +547,7 @@ document.querySelectorAll(".filter-btn").forEach(button => {
   });
 });
 
-renderGames();
+loadGames();
 </script>
 
 </body>
